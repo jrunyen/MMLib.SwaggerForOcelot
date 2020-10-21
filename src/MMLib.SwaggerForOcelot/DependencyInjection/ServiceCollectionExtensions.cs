@@ -1,9 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
-using MMLib.SwaggerForOcelot.Configuration;
-using MMLib.SwaggerForOcelot.ServiceDiscovery;
-using MMLib.SwaggerForOcelot.Transformation;
-using System.Collections.Generic;
 using MMLib.SwaggerForOcelot.Middleware;
+using MMLib.SwaggerForOcelot.DependencyInjection;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -17,14 +14,10 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="services">The services.</param>
         /// <param name="configuration">The configuration.</param>
-        /// <returns><see cref="IServiceCollection"/></returns>
-        public static IServiceCollection AddSwaggerForOcelot(this IServiceCollection services, IConfiguration configuration)
-            => services
-            .AddTransient<ISwaggerServiceDiscoveryProvider, SwaggerServiceDiscoveryProvider>()
-            .AddTransient<ISwaggerJsonTransformer, SwaggerJsonTransformer>()
-            .Configure<List<RouteOptions>>(options => configuration.GetSection("Routes").Bind(options))
-            .Configure<List<SwaggerEndPointOptions>>(options
-                => configuration.GetSection(SwaggerEndPointOptions.ConfigurationSectionName).Bind(options))
-            .AddHttpClient();
+        /// <returns><see cref="ISwaggerForOcelotBuilder"/></returns>
+        public static ISwaggerForOcelotBuilder AddSwaggerForOcelot(this IServiceCollection services, IConfiguration configuration)
+        {
+            return new SwaggerForOcelotBuilder(services, configuration);
+        }
     }
 }

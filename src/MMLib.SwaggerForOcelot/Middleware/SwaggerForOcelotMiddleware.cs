@@ -70,7 +70,7 @@ namespace MMLib.SwaggerForOcelot.Middleware
                 .ExpandConfig(EndPoint)
                 .GroupByPaths();
 
-            HttpClient httpClient = _httpClientFactory.CreateClient();
+            HttpClient httpClient = _httpClientFactory.CreateClient("SwaggerForOcelot");
             SetHttpVersion(httpClient, routeOptions);
             AddHeaders(httpClient);
             string content = await httpClient.GetStringAsync(Url);
